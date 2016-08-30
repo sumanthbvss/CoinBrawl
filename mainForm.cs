@@ -28,19 +28,33 @@ namespace WindowsFormsApplication1
         private void updateMainForm()
         {
             CookieAwareWebClient client = new CookieAwareWebClient(this.cookie);
-            List<String> playerInfo = SourceParser.PlayerStateInfo(client.DownloadString(CoinBrawlPath.CHARACTER));
-            loadStateInfo(playerInfo);
+            Player player = new Player(SourceParser.PlayerStateInfo(client.DownloadString(CoinBrawlPath.CHARACTER)));
+            loadStateInfo(player);
         }
 
-        private void loadStateInfo(List<String> info)
+        private void loadStateInfo(Player player)
         {
-            levelValue.Text = info[0];
-            atkValue.Text = info[1];
-            defValue.Text = info[2];
-            staminaValue.Text = info[3];
-            tokensValue.Text = info[4];
-            goldValue.Text = info[5];
-            satoshiValue.Text = info[6];
+            //Label
+            levelValue.Text = player.getLevel();
+            atkValue.Text = player.getAttack();
+            defValue.Text = player.getDefense();
+            staminaValue.Text = player.getStamina();
+            tokensValue.Text = player.getTokens();
+            goldValue.Text = player.getGold();
+            satoshiValue.Text = player.getSatoshi();
+
+            //Button
+            stamina_btn.Enabled = player.canUpgradeStamina();
+            stamina_btn.Text = Player.UPGRADE + player.upgradeStaminaGold() + Player.GOLD;
+
+            tokens_btn.Enabled = player.canUpgradeTokens();
+            tokens_btn.Text = Player.UPGRADE + player.upgradeTokensGold() + Player.GOLD;
+
+            atk_btn.Enabled = player.canUpgradeAttack();
+            atk_btn.Text = Player.UPGRADE + player.upgradeAttackGold() + Player.GOLD;
+
+            def_btn.Enabled = player.canUpgradeDefense();
+            def_btn.Text = Player.UPGRADE + player.upgradeDefenseGold() + Player.GOLD;
         }
 
 
@@ -50,6 +64,11 @@ namespace WindowsFormsApplication1
         }
 
         private void label11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void defbtn_Click(object sender, EventArgs e)
         {
 
         }

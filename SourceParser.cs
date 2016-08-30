@@ -11,6 +11,7 @@ namespace WindowsFormsApplication1
     class SourceParser
     {
         private const String EMPTY = "";
+        private const String GOLD_EXPENSE = "([0-9])+";
         public static String parseAuthenticationToken(String htmlSourceStr)
         {
             if(htmlSourceStr.Length == 0)
@@ -35,6 +36,7 @@ namespace WindowsFormsApplication1
         {
             List<String> playerInfo = new List<String>();
             sourceInfo = sourceInfo.Replace("\n", SourceParser.EMPTY);
+            sourceInfo = sourceInfo.Replace("\r", SourceParser.EMPTY);
             String pattern = "<table class='table stats-table'>(.*)<\\/tbody><\\/table>";
             Match match = Regex.Match(sourceInfo, pattern);
             playerInfo.Add(SourceParser.ParseLevel(sourceInfo));
@@ -44,11 +46,17 @@ namespace WindowsFormsApplication1
             playerInfo.Add(SourceParser.ParseTokens(sourceInfo));
             playerInfo.Add(SourceParser.ParseGold(sourceInfo));
             playerInfo.Add(SourceParser.ParseSatoshi(sourceInfo));
+            playerInfo.Add(SourceParser.ParseUpdateStamina(sourceInfo));
+            playerInfo.Add(SourceParser.ParseUpdateTokens(sourceInfo));
+            playerInfo.Add(SourceParser.ParseUpdateATK(sourceInfo));
+            playerInfo.Add(SourceParser.ParseUpdateDEF(sourceInfo));
             /* List stored in order as following:
-             * 1.Level      2.Attack
-             * 3.Defense    4.Stamina
-             * 5.Tokens     6.Gold
-             * 7.Satoshi
+             * 1.Level              2.Attack
+             * 3.Defense            4.Stamina
+             * 5.Tokens             6.Gold
+             * 7.Satoshi            8.Upgrade Stamina
+             * 9.Upgrade Tokens     10.Upgrade Attack
+             * 11.Upgrade Defense
              */
             return playerInfo;
         }
@@ -108,13 +116,33 @@ namespace WindowsFormsApplication1
             return match.Groups[0].Value.Replace("<td>Satoshi</td><td><strong class='text-success'>", SourceParser.EMPTY);
         }
 
+        public static String ParseUpdateStamina(String src) 
+        {
+            String staminaPattern = "<tr><td>Stamina</td><td>(.*)</td></tr><tr><td>Tokens</td>";
+            String upgradePattern = "(Upgrade \\([0-9]* gold\\))";
+            Match match = Regex.Match(Regex.Match(Regex.Match(src, staminaPattern).Groups[0].Value, upgradePattern).Groups[0].Value, SourceParser.GOLD_EXPENSE);
+            return match.Groups[0].Value; 
+        }
+        public static String ParseUpdateTokens(String src) 
+        {
+            String staminaPattern = "<tr><td>Tokens</td><td>(.*)</td></tr><tr><td>Attack</td>";
+            String upgradePattern = "(Upgrade \\([0-9]* gold\\))";
+            Match match = Regex.Match(Regex.Match(Regex.Match(src, staminaPattern).Groups[0].Value, upgradePattern).Groups[0].Value,SourceParser.GOLD_EXPENSE);
+            return match.Groups[0].Value; 
+        }
         public static String ParseUpdateATK(String src) 
         {
-            String pattern = "";
-            return SourceParser.EMPTY; 
+            String staminaPattern = "<tr><td>Attack</td><td>(.*)</td></tr><tr><td>Defense</td>";
+            String upgradePattern = "(Upgrade \\([0-9]* gold\\))";
+            Match match = Regex.Match(Regex.Match(Regex.Match(src, staminaPattern).Groups[0].Value, upgradePattern).Groups[0].Value, SourceParser.GOLD_EXPENSE);
+            return match.Groups[0].Value;
         }
-        public static String ParseUpdateDEF(String src) { return SourceParser.EMPTY; }
-        public static String ParseUpdateStamina(String src) { return SourceParser.EMPTY; }
-        public static String ParseUpdateTokens(String src) { return SourceParser.EMPTY; }
+        public static String ParseUpdateDEF(String src)
+        {
+            String staminaPattern = "<tr><td>Defense</td><td>(.*)</td></tr><tr><td>Battle Stats</td>";
+            String upgradePattern = "(Upgrade \\([0-9]* gold\\))";
+            Match match = Regex.Match(Regex.Match(Regex.Match(src, staminaPattern).Groups[0].Value, upgradePattern).Groups[0].Value, SourceParser.GOLD_EXPENSE);
+            return match.Groups[0].Value; 
+        }
     }
 }
