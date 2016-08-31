@@ -12,6 +12,12 @@ namespace WindowsFormsApplication1
     {
         private const String EMPTY = "";
         private const String GOLD_EXPENSE = "([0-9])+";
+        public static String FilterBlanlAndNewLine(String sourceInfo)
+        {
+            sourceInfo = sourceInfo.Replace("\r", SourceParser.EMPTY).Replace("\n", SourceParser.EMPTY);
+            return sourceInfo;
+        }
+
         public static String parseAuthenticationToken(String htmlSourceStr)
         {
             if(htmlSourceStr.Length == 0)
@@ -32,6 +38,34 @@ namespace WindowsFormsApplication1
             return arenaPlayer;
         }
 
+        public static String ParseCSRFToken(String sourceInfo)
+        {
+            String pattern = "(<meta content=\"authenticity_token\" name=\"csrf-param\"\\/><meta content=\")(.*)(\" name=\"csrf-token\"\\/>)";
+            sourceInfo = sourceInfo.Replace("\n", SourceParser.EMPTY);
+            sourceInfo = sourceInfo.Replace("\r", SourceParser.EMPTY);
+            Match match = Regex.Match(SourceParser.FilterBlanlAndNewLine(sourceInfo), pattern);
+            return match.Groups[2].Value;
+        }
+
+        public static List<String> battleInfo(String sourceInfo)
+        {
+            //List<List<String>> battleInfo = new List<List<String>>();
+            sourceInfo = sourceInfo.Replace("\n", SourceParser.EMPTY);
+            sourceInfo = sourceInfo.Replace("\r", SourceParser.EMPTY);
+            String battlePattern = "CoinBrawl.Battle(.*)CoinBrawl.NpcBattle";
+            String end = @"battles(.*)(?=createBattlePath)";
+            String allEnemyInfo = "(\"key\")(.*)(\"key\")(.*)(\"key\")(.*)(\"key\")(.*)(\"key\")(.*)";
+            Match match = Regex.Match(Regex.Match(Regex.Match(sourceInfo, battlePattern).Groups[0].Value, end).Groups[0].Value, allEnemyInfo);
+
+            String enemyStr = match.Groups[1].Value + match.Groups[2].Value;
+            String enemyInfoPattern = "(\"key\":\")([A-Za-z0-9]*)(\",\"defender_id\":)([0-9]*)";
+            match = Regex.Match(enemyStr, enemyInfoPattern);
+            List<String> enemyList = new List<String>();
+            enemyList.Add(match.Groups[2].Value);//Enemy key
+            enemyList.Add(match.Groups[4].Value);//Enemy ID
+            return enemyList;
+        }
+
         public static List<String> PlayerStateInfo(String sourceInfo)
         {
             List<String> playerInfo = new List<String>();
@@ -39,6 +73,14 @@ namespace WindowsFormsApplication1
             sourceInfo = sourceInfo.Replace("\r", SourceParser.EMPTY);
             String pattern = "<table class='table stats-table'>(.*)<\\/tbody><\\/table>";
             Match match = Regex.Match(sourceInfo, pattern);
+            /* List stored in order as following:
+             * 1.Level              2.Attack
+             * 3.Defense            4.Stamina
+             * 5.Tokens             6.Gold
+             * 7.Satoshi            8.Upgrade Stamina
+             * 9.Upgrade Tokens     10.Upgrade Attack
+             * 11.Upgrade Defense
+             */
             playerInfo.Add(SourceParser.ParseLevel(sourceInfo));
             playerInfo.Add(SourceParser.ParseAttack(sourceInfo));
             playerInfo.Add(SourceParser.ParseDefense(sourceInfo));            
@@ -50,14 +92,6 @@ namespace WindowsFormsApplication1
             playerInfo.Add(SourceParser.ParseUpdateTokens(sourceInfo));
             playerInfo.Add(SourceParser.ParseUpdateATK(sourceInfo));
             playerInfo.Add(SourceParser.ParseUpdateDEF(sourceInfo));
-            /* List stored in order as following:
-             * 1.Level              2.Attack
-             * 3.Defense            4.Stamina
-             * 5.Tokens             6.Gold
-             * 7.Satoshi            8.Upgrade Stamina
-             * 9.Upgrade Tokens     10.Upgrade Attack
-             * 11.Upgrade Defense
-             */
             return playerInfo;
         }
 

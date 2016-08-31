@@ -47,8 +47,14 @@
             this.arenapointsValue = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.atk_btn = new System.Windows.Forms.Button();
+            this.def_btn = new System.Windows.Forms.Button();
+            this.stamina_btn = new System.Windows.Forms.Button();
+            this.tokens_btn = new System.Windows.Forms.Button();
+            this.start_btn = new System.Windows.Forms.Button();
+            this.stop_btn = new System.Windows.Forms.Button();
+            this.Exit = new System.Windows.Forms.Button();
+            this.refresh_btn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -66,7 +72,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("PMingLiU", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label4.Location = new System.Drawing.Point(9, 138);
+            this.label4.Location = new System.Drawing.Point(12, 125);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(31, 16);
             this.label4.TabIndex = 3;
@@ -76,7 +82,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("PMingLiU", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label5.Location = new System.Drawing.Point(9, 183);
+            this.label5.Location = new System.Drawing.Point(12, 163);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(31, 16);
             this.label5.TabIndex = 4;
@@ -86,7 +92,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("PMingLiU", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label6.Location = new System.Drawing.Point(5, 237);
+            this.label6.Location = new System.Drawing.Point(5, 200);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(58, 16);
             this.label6.TabIndex = 5;
@@ -96,7 +102,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("PMingLiU", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label7.Location = new System.Drawing.Point(9, 281);
+            this.label7.Location = new System.Drawing.Point(5, 237);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(54, 16);
             this.label7.TabIndex = 6;
@@ -106,7 +112,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("PMingLiU", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label8.Location = new System.Drawing.Point(12, 331);
+            this.label8.Location = new System.Drawing.Point(12, 273);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(39, 16);
             this.label8.TabIndex = 7;
@@ -116,7 +122,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("PMingLiU", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label9.Location = new System.Drawing.Point(10, 382);
+            this.label9.Location = new System.Drawing.Point(5, 308);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(53, 16);
             this.label9.TabIndex = 8;
@@ -126,7 +132,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("PMingLiU", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label11.Location = new System.Drawing.Point(12, 446);
+            this.label11.Location = new System.Drawing.Point(5, 346);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(88, 16);
             this.label11.TabIndex = 10;
@@ -146,7 +152,7 @@
             // 
             // levelValue
             // 
-            this.levelValue.Location = new System.Drawing.Point(57, 58);
+            this.levelValue.Location = new System.Drawing.Point(76, 58);
             this.levelValue.Name = "levelValue";
             this.levelValue.ReadOnly = true;
             this.levelValue.Size = new System.Drawing.Size(59, 22);
@@ -154,7 +160,7 @@
             // 
             // atkValue
             // 
-            this.atkValue.Location = new System.Drawing.Point(57, 138);
+            this.atkValue.Location = new System.Drawing.Point(76, 125);
             this.atkValue.Name = "atkValue";
             this.atkValue.ReadOnly = true;
             this.atkValue.Size = new System.Drawing.Size(114, 22);
@@ -162,7 +168,7 @@
             // 
             // defValue
             // 
-            this.defValue.Location = new System.Drawing.Point(57, 183);
+            this.defValue.Location = new System.Drawing.Point(76, 163);
             this.defValue.Name = "defValue";
             this.defValue.ReadOnly = true;
             this.defValue.Size = new System.Drawing.Size(114, 22);
@@ -170,42 +176,42 @@
             // 
             // staminaValue
             // 
-            this.staminaValue.Location = new System.Drawing.Point(69, 231);
+            this.staminaValue.Location = new System.Drawing.Point(76, 200);
             this.staminaValue.Name = "staminaValue";
             this.staminaValue.ReadOnly = true;
-            this.staminaValue.Size = new System.Drawing.Size(116, 22);
+            this.staminaValue.Size = new System.Drawing.Size(114, 22);
             this.staminaValue.TabIndex = 16;
             // 
             // tokensValue
             // 
-            this.tokensValue.Location = new System.Drawing.Point(69, 281);
+            this.tokensValue.Location = new System.Drawing.Point(76, 237);
             this.tokensValue.Name = "tokensValue";
             this.tokensValue.ReadOnly = true;
-            this.tokensValue.Size = new System.Drawing.Size(116, 22);
+            this.tokensValue.Size = new System.Drawing.Size(114, 22);
             this.tokensValue.TabIndex = 17;
             // 
             // goldValue
             // 
-            this.goldValue.Location = new System.Drawing.Point(62, 331);
+            this.goldValue.Location = new System.Drawing.Point(76, 273);
             this.goldValue.Name = "goldValue";
             this.goldValue.ReadOnly = true;
-            this.goldValue.Size = new System.Drawing.Size(135, 22);
+            this.goldValue.Size = new System.Drawing.Size(114, 22);
             this.goldValue.TabIndex = 18;
             // 
             // satoshiValue
             // 
-            this.satoshiValue.Location = new System.Drawing.Point(76, 382);
+            this.satoshiValue.Location = new System.Drawing.Point(76, 308);
             this.satoshiValue.Name = "satoshiValue";
             this.satoshiValue.ReadOnly = true;
-            this.satoshiValue.Size = new System.Drawing.Size(121, 22);
+            this.satoshiValue.Size = new System.Drawing.Size(114, 22);
             this.satoshiValue.TabIndex = 19;
             // 
             // arenapointsValue
             // 
-            this.arenapointsValue.Location = new System.Drawing.Point(106, 446);
+            this.arenapointsValue.Location = new System.Drawing.Point(104, 346);
             this.arenapointsValue.Name = "arenapointsValue";
             this.arenapointsValue.ReadOnly = true;
-            this.arenapointsValue.Size = new System.Drawing.Size(86, 22);
+            this.arenapointsValue.Size = new System.Drawing.Size(112, 22);
             this.arenapointsValue.TabIndex = 20;
             // 
             // label2
@@ -223,37 +229,100 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("PMingLiU", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label3.Location = new System.Drawing.Point(10, 95);
+            this.label3.Location = new System.Drawing.Point(12, 91);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 16);
             this.label3.TabIndex = 22;
             this.label3.Text = "Class";
             // 
-            // button1
+            // atk_btn
             // 
-            this.button1.Location = new System.Drawing.Point(197, 136);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 23;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.atk_btn.Location = new System.Drawing.Point(213, 124);
+            this.atk_btn.Name = "atk_btn";
+            this.atk_btn.Size = new System.Drawing.Size(138, 23);
+            this.atk_btn.TabIndex = 23;
+            this.atk_btn.Text = "button1";
+            this.atk_btn.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // def_btn
             // 
-            this.button2.Location = new System.Drawing.Point(197, 182);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 24;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
+            this.def_btn.Location = new System.Drawing.Point(213, 163);
+            this.def_btn.Name = "def_btn";
+            this.def_btn.Size = new System.Drawing.Size(138, 23);
+            this.def_btn.TabIndex = 24;
+            this.def_btn.Text = "button2";
+            this.def_btn.UseVisualStyleBackColor = true;
+            // 
+            // stamina_btn
+            // 
+            this.stamina_btn.Location = new System.Drawing.Point(213, 200);
+            this.stamina_btn.Name = "stamina_btn";
+            this.stamina_btn.Size = new System.Drawing.Size(138, 23);
+            this.stamina_btn.TabIndex = 25;
+            this.stamina_btn.Text = "button3";
+            this.stamina_btn.UseVisualStyleBackColor = true;
+            // 
+            // tokens_btn
+            // 
+            this.tokens_btn.Location = new System.Drawing.Point(213, 237);
+            this.tokens_btn.Name = "tokens_btn";
+            this.tokens_btn.Size = new System.Drawing.Size(138, 23);
+            this.tokens_btn.TabIndex = 26;
+            this.tokens_btn.Text = "button4";
+            this.tokens_btn.UseVisualStyleBackColor = true;
+            // 
+            // start_btn
+            // 
+            this.start_btn.Location = new System.Drawing.Point(76, 12);
+            this.start_btn.Name = "start_btn";
+            this.start_btn.Size = new System.Drawing.Size(75, 23);
+            this.start_btn.TabIndex = 27;
+            this.start_btn.Text = "Start";
+            this.start_btn.UseVisualStyleBackColor = true;
+            this.start_btn.Click += new System.EventHandler(this.start_btn_Click);
+            // 
+            // stop_btn
+            // 
+            this.stop_btn.Location = new System.Drawing.Point(213, 12);
+            this.stop_btn.Name = "stop_btn";
+            this.stop_btn.Size = new System.Drawing.Size(75, 23);
+            this.stop_btn.TabIndex = 28;
+            this.stop_btn.Text = "Stop";
+            this.stop_btn.UseVisualStyleBackColor = true;
+            // 
+            // Exit
+            // 
+            this.Exit.Location = new System.Drawing.Point(517, 12);
+            this.Exit.Name = "Exit";
+            this.Exit.Size = new System.Drawing.Size(75, 23);
+            this.Exit.TabIndex = 29;
+            this.Exit.Text = "Exit";
+            this.Exit.UseVisualStyleBackColor = true;
+            this.Exit.Click += new System.EventHandler(this.Exit_Click);
+            // 
+            // refresh_btn
+            // 
+            this.refresh_btn.Location = new System.Drawing.Point(359, 12);
+            this.refresh_btn.Name = "refresh_btn";
+            this.refresh_btn.Size = new System.Drawing.Size(75, 23);
+            this.refresh_btn.TabIndex = 30;
+            this.refresh_btn.Text = "Refresh";
+            this.refresh_btn.UseVisualStyleBackColor = true;
+            this.refresh_btn.Click += new System.EventHandler(this.refresh_btn_Click);
             // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(976, 554);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.refresh_btn);
+            this.Controls.Add(this.Exit);
+            this.Controls.Add(this.stop_btn);
+            this.Controls.Add(this.start_btn);
+            this.Controls.Add(this.tokens_btn);
+            this.Controls.Add(this.stamina_btn);
+            this.Controls.Add(this.def_btn);
+            this.Controls.Add(this.atk_btn);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.arenapointsValue);
@@ -302,7 +371,13 @@
         private System.Windows.Forms.TextBox arenapointsValue;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button atk_btn;
+        private System.Windows.Forms.Button def_btn;
+        private System.Windows.Forms.Button stamina_btn;
+        private System.Windows.Forms.Button tokens_btn;
+        private System.Windows.Forms.Button start_btn;
+        private System.Windows.Forms.Button stop_btn;
+        private System.Windows.Forms.Button Exit;
+        private System.Windows.Forms.Button refresh_btn;
     }
 }

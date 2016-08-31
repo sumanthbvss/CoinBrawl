@@ -4,11 +4,11 @@
 */
 
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -36,7 +36,7 @@ namespace WindowsFormsApplication1
             var cookieJar = new CookieContainer();
             System.Net.ServicePointManager.Expect100Continue = false;
             CookieAwareWebClient client = new CookieAwareWebClient(cookieJar);
-            client.Method = "POST";
+            client.Method = CookieAwareWebClient.POST;
 
             String resp = String.Empty;
             String token = SourceParser.parseAuthenticationToken(client.DownloadString(CoinBrawlPath.SIGN_IN));

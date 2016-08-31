@@ -8,8 +8,9 @@ namespace WindowsFormsApplication1
 {
     class Player
     {
-        public static String UPGRADE = "Upgrade";
-        public static String GOLD = "Gold";
+        static Player player = new Player();
+        public static String UPGRADE = "Upgrade ";
+        public static String GOLD = " Gold";
         public static String DISABLED = "disabled";
         String level;
         String job;
@@ -35,27 +36,27 @@ namespace WindowsFormsApplication1
         bool regenerateTokensFlag;
 
         private Player() { }
-        public Player(List<String> info) 
+        public static Player getPlayer()
         {
-            level= info[0];
-            attack = info[1];
-            defense = info[2];
-            stamina = info[3];
-            tokens = info[4];
-            gold = info[5];
-            satoshi = info[6];
-            staminaGold = Int32.Parse(info[7]);
-            tokensGold = Int32.Parse(info[8]);
-            attackGold = Int32.Parse(info[9]);
-            defenseGold = Int32.Parse(info[10]);
-            upgradeStaminaFlag = false;
-            upgradeTokensFlag = false;
-            upgradeAttackFlag = false;
-            upgradeDefenseFlag = false;
-            regenerateStaminaFlag = false;
-            regenerateTokensFlag = false;
+            if (player == null)
+                player = new Player();
+            return player;
         }
-        public Player(List<String> info) { }
+
+        public static void updatePlayer(List<String> info)
+        {
+            player.level = info[0];
+            player.attack = info[1];
+            player.defense = info[2];
+            player.stamina = info[3];
+            player.tokens = info[4];
+            player.gold = info[5];
+            player.satoshi = info[6];
+            player.staminaGold = Int32.Parse(info[7]);
+            player.tokensGold = Int32.Parse(info[8]);
+            player.attackGold = Int32.Parse(info[9]);
+            player.defenseGold = Int32.Parse(info[10]);
+        }
 
         //Setter
         public void setLevel(String level){ this.level = level;}
