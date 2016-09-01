@@ -14,6 +14,7 @@ namespace WindowsFormsApplication1
         public String CSRF_Token;
         public String Method;
         public bool clickFight;
+        public bool clickSave;
         public CookieContainer CookieContainer { get; set; }
         public Uri Uri { get; set; }
 
@@ -47,6 +48,11 @@ namespace WindowsFormsApplication1
                     (request as HttpWebRequest).Headers["X-CSRF-Token"] = this.CSRF_Token;
                 }
 
+                if (clickSave)
+                {
+                    (request as HttpWebRequest).Referer = CoinBrawl.CHARACTER;
+                    (request as HttpWebRequest).Headers["Upgrade-Insecure-Requests"] = "1";
+                }
             }
             HttpWebRequest httpRequest = (HttpWebRequest)request;
             httpRequest.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;

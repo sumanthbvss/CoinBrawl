@@ -23,7 +23,11 @@ namespace WindowsFormsApplication1
         String satoshi;
         String arenaPoints;
         String safetyTime;
-        String bitcoinAddress;
+        String bitcoinAddress;        
+        String userName;
+        String userPassword;
+        String userID;
+        String authenticity_token;
         int staminaGold;
         int tokensGold;
         int attackGold;
@@ -56,6 +60,8 @@ namespace WindowsFormsApplication1
             player.tokensGold = Int32.Parse(info[8]);
             player.attackGold = Int32.Parse(info[9]);
             player.defenseGold = Int32.Parse(info[10]);
+            player.bitcoinAddress = info[11];
+            player.userID = info[12];
         }
 
         //Setter
@@ -79,6 +85,9 @@ namespace WindowsFormsApplication1
         public void setUpgradeTokens(bool flag) { this.upgradeTokensFlag = flag; }
         public void setUpgradeAttack(bool flag) { this.upgradeAttackFlag = flag; }
         public void setUpgradeDefense(bool flag) { this.upgradeDefenseFlag = flag; }
+        public void setUserID(String userID) { this.userID = userID; }
+
+        public void setAuthenticityToken(String authToken) { this.authenticity_token = authToken; }
 
         //Getter
         public String getLevel() { return this.level; }
@@ -93,6 +102,8 @@ namespace WindowsFormsApplication1
         public String getArenaPoints() { return this.arenaPoints; }
         public String getSafetytime() { return this.safetyTime; }
         public String getBitCoinAddress() { return this.bitcoinAddress; }
+        public String getUserID() { return this.userID; }
+        public String getAuthenticityToken(){ return this.authenticity_token;}
         public int upgradeStaminaGold() { return this.staminaGold; }
         public int upgradeTokensGold() { return this.tokensGold; }
         public int upgradeAttackGold() { return this.attackGold; }

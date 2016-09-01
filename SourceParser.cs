@@ -12,13 +12,21 @@ namespace WindowsFormsApplication1
     {
         private const String EMPTY = "";
         private const String GOLD_EXPENSE = "([0-9])+";
+        private SourceParser() { }
         public static String FilterBlanlAndNewLine(String sourceInfo)
         {
             sourceInfo = sourceInfo.Replace("\r", SourceParser.EMPTY).Replace("\n", SourceParser.EMPTY);
             return sourceInfo;
         }
 
-        public static String parseAuthenticationToken(String htmlSourceStr)
+        public static String ParseUserID(String sourceInfo)
+        {
+            String pattern = "(http:\\/\\/www.coinbrawl.com\\?ref=)([0-9]*)";
+            Match match = Regex.Match(sourceInfo, pattern);
+            return match.Groups[2].Value;
+        }
+
+        public static String ParseAuthenticationToken(String htmlSourceStr)
         {
             if(htmlSourceStr.Length == 0)
                 return SourceParser.EMPTY;
@@ -32,10 +40,13 @@ namespace WindowsFormsApplication1
                 return SourceParser.EMPTY;
         }
 
-        public static String ParseBitcoinAddress(String source) 
+        public static String ParseBitcoinAddress(String sourceInfo) 
         {
-            String pattern = "(id=\"user_bitcoin_address\")(.*)(value=\")";
-            return pattern;
+            String pattern = "(id=\"user_bitcoin_address\")(\\s)(name=\"user(.*)\")(\\s)(type=\"text\")(\\s)(value=\")([A-Za-z0-9]*)(?=\")";
+            sourceInfo = sourceInfo.Replace("\n", SourceParser.EMPTY);
+            sourceInfo = sourceInfo.Replace("\r", SourceParser.EMPTY);
+            Match match = Regex.Match(sourceInfo, pattern);
+            return match.Groups[9].Value;
         }
 
         public static List<String> ParseArenaPlayer(String src)
@@ -53,7 +64,7 @@ namespace WindowsFormsApplication1
             return match.Groups[2].Value;
         }
 
-        public static List<String> battleInfo(String sourceInfo)
+        public static List<String> BattleInfo(String sourceInfo)
         {
             //List<List<String>> battleInfo = new List<List<String>>();
             sourceInfo = sourceInfo.Replace("\n", SourceParser.EMPTY);
@@ -85,7 +96,8 @@ namespace WindowsFormsApplication1
              * 5.Tokens             6.Gold
              * 7.Satoshi            8.Upgrade Stamina
              * 9.Upgrade Tokens     10.Upgrade Attack
-             * 11.Upgrade Defense
+             * 11.Upgrade Defense   12.Bitcoin Address
+             * 13.User ID
              */
             playerInfo.Add(SourceParser.ParseLevel(sourceInfo));
             playerInfo.Add(SourceParser.ParseAttack(sourceInfo));
@@ -98,6 +110,8 @@ namespace WindowsFormsApplication1
             playerInfo.Add(SourceParser.ParseUpdateTokens(sourceInfo));
             playerInfo.Add(SourceParser.ParseUpdateATK(sourceInfo));
             playerInfo.Add(SourceParser.ParseUpdateDEF(sourceInfo));
+            playerInfo.Add(SourceParser.ParseBitcoinAddress(sourceInfo));
+            playerInfo.Add(SourceParser.ParseUserID(sourceInfo));
             return playerInfo;
         }
 

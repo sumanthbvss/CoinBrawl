@@ -45,6 +45,7 @@ namespace WindowsFormsApplication1
             tokensValue.Text = player.getTokens();
             goldValue.Text = player.getGold();
             satoshiValue.Text = player.getSatoshi();
+            bitconAddressTextBox.Text = player.getBitCoinAddress();
 
             //Button
             stamina_btn.Enabled = player.canUpgradeStamina();
@@ -55,22 +56,6 @@ namespace WindowsFormsApplication1
             atk_btn.Text = Player.UPGRADE + player.upgradeAttackGold() + Player.GOLD;
             def_btn.Enabled = player.canUpgradeDefense();
             def_btn.Text = Player.UPGRADE + player.upgradeDefenseGold() + Player.GOLD;
-        }
-
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label11_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void defbtn_Click(object sender, EventArgs e)
-        {
-            updateMainForm();
         }
 
         private void Exit_Click(object sender, EventArgs e)
@@ -91,8 +76,7 @@ namespace WindowsFormsApplication1
             while (autoBattle)
             {
                 CookieAwareWebClient client = new CookieAwareWebClient(this.cookie);
-
-                List<String> enemyList = SourceParser.battleInfo(client.DownloadString(CoinBrawl.ARENA));
+                List<String> enemyList = SourceParser.BattleInfo(client.DownloadString(CoinBrawl.ARENA));
                 String postData = String.Format("battle%5Bdefender_id%5D={0}&token={1}", enemyList[1], enemyList[0]);
                 CookieAwareWebClient battle = new CookieAwareWebClient(this.cookie);
                 battle.Method = CookieAwareWebClient.POST;
@@ -100,10 +84,6 @@ namespace WindowsFormsApplication1
                 battle.CSRF_Token = SourceParser.ParseCSRFToken(client.DownloadString(CoinBrawl.ARENA));
 
                 String respones = battle.UploadString(CoinBrawl.BATTELS, postData);
-                //CookieAwareWebClient quickStats = new CookieAwareWebClient(this.cookie);
-                //quickStats.Method = CookieAwareWebClient.GET;
-                //CookieAwareWebClient availableBatte = new CookieAwareWebClient(this.cookie);
-                //availableBatte.Method = CookieAwareWebClient.GET;
                 fightTimes++;
 
                 //updateMainForm();
@@ -119,6 +99,54 @@ namespace WindowsFormsApplication1
         {
             this.autoBattle = false;
             battleThread.Join();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Player player = Player.getPlayer();
+            player.setBitCoinAddress(bitconAddressTextBox.Text);
+            CookieAwareWebClient client = new CookieAwareWebClient(this.cookie);
+            String postData = String.Format("utf8={0}&_method={1}&authenticity_token={2}&user%5Bbitcoin_address%5D={3}&commit={4}",
+                CoinBrawl.UTF8, CoinBrawl.METHOD_PATCH, player.getAuthenticityToken(), player.getBitCoinAddress(), CoinBrawl.COMMIT_SAVE);
+            client.Method = "POST";
+            client.clickSave = true;
+            String response = client.UploadString(CoinBrawl.USER + player.getUserID(), postData);
+        }
+
+        private void atk_btn_Click(object sender, EventArgs e)
+        {                      
+            CookieAwareWebClient client = new CookieAwareWebClient(this.cookie);            
+            client.Method = "GET";
+            client.clickSave = true;
+            client.DownloadString(CoinBrawl.UPGRADE_ATTACK);
+            updateMainForm();
+        }
+
+        private void def_btn_Click(object sender, EventArgs e)
+        {
+            CookieAwareWebClient client = new CookieAwareWebClient(this.cookie);
+            client.Method = "GET";
+            client.clickSave = true;
+            client.DownloadString(CoinBrawl.UPGRADE_DEFENSE);
+            updateMainForm();
+        }
+
+        private void stamina_btn_Click(object sender, EventArgs e)
+        {
+            CookieAwareWebClient client = new CookieAwareWebClient(this.cookie);
+            client.Method = "GET";
+            client.clickSave = true;
+            client.DownloadString(CoinBrawl.UPGRADE_STAMINA);
+            updateMainForm();
+        }
+
+        private void tokens_btn_Click(object sender, EventArgs e)
+        {
+            CookieAwareWebClient client = new CookieAwareWebClient(this.cookie);
+            client.Method = "GET";
+            client.clickSave = true;
+            client.DownloadString(CoinBrawl.UPGRADE_TOKENS);
+            updateMainForm();
         }
     }
 }

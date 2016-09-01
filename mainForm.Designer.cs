@@ -56,6 +56,10 @@
             this.Exit = new System.Windows.Forms.Button();
             this.refresh_btn = new System.Windows.Forms.Button();
             this.tokenBar = new System.Windows.Forms.ProgressBar();
+            this.bitcoinAddr = new System.Windows.Forms.Label();
+            this.bitconAddressTextBox = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.satoshiWithdraw_btn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -67,7 +71,6 @@
             this.label1.Size = new System.Drawing.Size(28, 16);
             this.label1.TabIndex = 0;
             this.label1.Text = "LV";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label4
             // 
@@ -138,7 +141,6 @@
             this.label11.Size = new System.Drawing.Size(88, 16);
             this.label11.TabIndex = 10;
             this.label11.Text = "Arena Points";
-            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // label12
             // 
@@ -181,7 +183,7 @@
             this.staminaValue.Name = "staminaValue";
             this.staminaValue.ReadOnly = true;
             this.staminaValue.Size = new System.Drawing.Size(114, 22);
-            this.staminaValue.TabIndex = 16;
+            this.staminaValue.TabIndex = 16;            
             // 
             // tokensValue
             // 
@@ -244,6 +246,7 @@
             this.atk_btn.TabIndex = 23;
             this.atk_btn.Text = "button1";
             this.atk_btn.UseVisualStyleBackColor = true;
+            this.atk_btn.Click += new System.EventHandler(this.atk_btn_Click);
             // 
             // def_btn
             // 
@@ -253,6 +256,7 @@
             this.def_btn.TabIndex = 24;
             this.def_btn.Text = "button2";
             this.def_btn.UseVisualStyleBackColor = true;
+            this.def_btn.Click += new System.EventHandler(this.def_btn_Click);
             // 
             // stamina_btn
             // 
@@ -262,6 +266,7 @@
             this.stamina_btn.TabIndex = 25;
             this.stamina_btn.Text = "button3";
             this.stamina_btn.UseVisualStyleBackColor = true;
+            this.stamina_btn.Click += new System.EventHandler(this.stamina_btn_Click);
             // 
             // tokens_btn
             // 
@@ -271,10 +276,11 @@
             this.tokens_btn.TabIndex = 26;
             this.tokens_btn.Text = "button4";
             this.tokens_btn.UseVisualStyleBackColor = true;
+            this.tokens_btn.Click += new System.EventHandler(this.tokens_btn_Click);
             // 
             // start_btn
             // 
-            this.start_btn.Location = new System.Drawing.Point(76, 12);
+            this.start_btn.Location = new System.Drawing.Point(15, 12);
             this.start_btn.Name = "start_btn";
             this.start_btn.Size = new System.Drawing.Size(75, 23);
             this.start_btn.TabIndex = 27;
@@ -284,7 +290,7 @@
             // 
             // stop_btn
             // 
-            this.stop_btn.Location = new System.Drawing.Point(276, 12);
+            this.stop_btn.Location = new System.Drawing.Point(124, 12);
             this.stop_btn.Name = "stop_btn";
             this.stop_btn.Size = new System.Drawing.Size(75, 23);
             this.stop_btn.TabIndex = 28;
@@ -294,7 +300,7 @@
             // 
             // Exit
             // 
-            this.Exit.Location = new System.Drawing.Point(831, 12);
+            this.Exit.Location = new System.Drawing.Point(341, 12);
             this.Exit.Name = "Exit";
             this.Exit.Size = new System.Drawing.Size(75, 23);
             this.Exit.TabIndex = 29;
@@ -304,7 +310,7 @@
             // 
             // refresh_btn
             // 
-            this.refresh_btn.Location = new System.Drawing.Point(582, 12);
+            this.refresh_btn.Location = new System.Drawing.Point(231, 12);
             this.refresh_btn.Name = "refresh_btn";
             this.refresh_btn.Size = new System.Drawing.Size(75, 23);
             this.refresh_btn.TabIndex = 30;
@@ -319,11 +325,51 @@
             this.tokenBar.Size = new System.Drawing.Size(183, 23);
             this.tokenBar.TabIndex = 31;
             // 
+            // bitcoinAddr
+            // 
+            this.bitcoinAddr.AutoSize = true;
+            this.bitcoinAddr.Font = new System.Drawing.Font("PMingLiU", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.bitcoinAddr.Location = new System.Drawing.Point(5, 385);
+            this.bitcoinAddr.Name = "bitcoinAddr";
+            this.bitcoinAddr.Size = new System.Drawing.Size(108, 16);
+            this.bitcoinAddr.TabIndex = 32;
+            this.bitcoinAddr.Text = "Bitcoin Address";
+            // 
+            // bitconAddressTextBox
+            // 
+            this.bitconAddressTextBox.Location = new System.Drawing.Point(8, 413);
+            this.bitconAddressTextBox.Name = "bitconAddressTextBox";
+            this.bitconAddressTextBox.Size = new System.Drawing.Size(280, 22);
+            this.bitconAddressTextBox.TabIndex = 33;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(294, 411);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(64, 23);
+            this.button1.TabIndex = 34;
+            this.button1.Text = "Save";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // satoshiWithdraw_btn
+            // 
+            this.satoshiWithdraw_btn.Location = new System.Drawing.Point(213, 308);
+            this.satoshiWithdraw_btn.Name = "satoshiWithdraw_btn";
+            this.satoshiWithdraw_btn.Size = new System.Drawing.Size(171, 23);
+            this.satoshiWithdraw_btn.TabIndex = 35;
+            this.satoshiWithdraw_btn.Text = "Withdraw (Min. 100000 Satoshi)";
+            this.satoshiWithdraw_btn.UseVisualStyleBackColor = true;            
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(976, 554);
+            this.ClientSize = new System.Drawing.Size(451, 554);
+            this.Controls.Add(this.satoshiWithdraw_btn);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.bitconAddressTextBox);
+            this.Controls.Add(this.bitcoinAddr);
             this.Controls.Add(this.tokenBar);
             this.Controls.Add(this.refresh_btn);
             this.Controls.Add(this.Exit);
@@ -390,5 +436,9 @@
         private System.Windows.Forms.Button Exit;
         private System.Windows.Forms.Button refresh_btn;
         private System.Windows.Forms.ProgressBar tokenBar;
+        private System.Windows.Forms.Label bitcoinAddr;
+        private System.Windows.Forms.TextBox bitconAddressTextBox;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button satoshiWithdraw_btn;
     }
 }

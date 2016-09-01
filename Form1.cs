@@ -36,10 +36,11 @@ namespace WindowsFormsApplication1
             CookieAwareWebClient client = new CookieAwareWebClient(cookieJar);
             System.Net.ServicePointManager.Expect100Continue = false;
             client.Method = CookieAwareWebClient.POST;
-
+            
             String response = String.Empty;
-            String token = SourceParser.parseAuthenticationToken(client.DownloadString(CoinBrawl.SIGN_IN));
-            String postData = String.Format("utf8=%E2%9C%93&authenticity_token={0}&user%5Bemail%5D={1}&user%5Bpassword%5D={2}&commit=Sign+in", token, userName.Text, userPassword.Text);
+            String token = SourceParser.ParseAuthenticationToken(client.DownloadString(CoinBrawl.SIGN_IN));
+            String postData = String.Format("utf8={0}&authenticity_token={1}&user%5Bemail%5D={2}&user%5Bpassword%5D={3}&commit={4}", 
+                CoinBrawl.UTF8, token, userName.Text, userPassword.Text, CoinBrawl.COMMIT_SIGN_IN);
             try
             {
                  response = client.UploadString(CoinBrawl.SIGN_IN, postData);
@@ -52,6 +53,8 @@ namespace WindowsFormsApplication1
             if (response.Contains(CoinBrawl.LOGIN_SUCCESS))
             {
                 MessageBox.Show("Login successfully");
+                Player player = Player.getPlayer();
+                player.setAuthenticityToken(token);
                 mainForm mForm = new mainForm();
                 mForm.cookie = client.CookieContainer;
                 this.Visible = false;
@@ -72,6 +75,11 @@ namespace WindowsFormsApplication1
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             //CoinBrawl Logo
+        }
+
+        private void userName_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
