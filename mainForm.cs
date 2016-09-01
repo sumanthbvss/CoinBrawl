@@ -6,15 +6,17 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace WindowsFormsApplication1
 {
     public partial class mainForm : Form
     {
-        public CookieContainer cookie;  
-        public String mainPage;
+        public static int fightTimes = 0;
+        public bool autoBattle;
+        public CookieContainer cookie;
+        private Thread battleThread;
         public mainForm()
         {
             InitializeComponent();
@@ -22,13 +24,14 @@ namespace WindowsFormsApplication1
 
         private void mainForm_Load(object sender, EventArgs e)
         {
+            this.autoBattle = false;
             updateMainForm();
         }
 
         private void updateMainForm()
         {
             CookieAwareWebClient client = new CookieAwareWebClient(this.cookie);
-            Player.updatePlayer((SourceParser.PlayerStateInfo(client.DownloadString(CoinBrawlPath.CHARACTER))));
+            Player.updatePlayer((SourceParser.PlayerStateInfo(client.DownloadString(CoinBrawl.CHARACTER))));           
             loadStateInfo(Player.getPlayer());
         }
 
@@ -46,13 +49,10 @@ namespace WindowsFormsApplication1
             //Button
             stamina_btn.Enabled = player.canUpgradeStamina();
             stamina_btn.Text = Player.UPGRADE + player.upgradeStaminaGold() + Player.GOLD;
-
             tokens_btn.Enabled = player.canUpgradeTokens();
             tokens_btn.Text = Player.UPGRADE + player.upgradeTokensGold() + Player.GOLD;
-
             atk_btn.Enabled = player.canUpgradeAttack();
             atk_btn.Text = Player.UPGRADE + player.upgradeAttackGold() + Player.GOLD;
-
             def_btn.Enabled = player.canUpgradeDefense();
             def_btn.Text = Player.UPGRADE + player.upgradeDefenseGold() + Player.GOLD;
         }
@@ -81,30 +81,44 @@ namespace WindowsFormsApplication1
 
         private void start_btn_Click(object sender, EventArgs e)
         {
-            CookieAwareWebClient client = new CookieAwareWebClient(this.cookie);
-            
-            List<String> enemyList = SourceParser.battleInfo(client.DownloadString(CoinBrawlPath.ARENA));            
-            String postData = String.Format("battle%5Bdefender_id%5D={0}&token={1}", enemyList[1], enemyList[0]);
-            CookieAwareWebClient battle = new CookieAwareWebClient(this.cookie);
-            battle.Method = CookieAwareWebClient.POST;
-            battle.clickFight = true;
-            battle.CSRF_Token = SourceParser.ParseCSRFToken(client.DownloadString(CoinBrawlPath.ARENA));
-            
-            String respones = battle.UploadString(CoinBrawlPath.BATTELS, postData);
+            this.autoBattle = true;
+            battleThread = new Thread(new ThreadStart(persistantBattle));
+            battleThread.Start();
+        }
 
-            CookieAwareWebClient quickStats = new CookieAwareWebClient(this.cookie);
-            quickStats.Method = CookieAwareWebClient.GET;
+        private void persistantBattle()
+        {
+            while (autoBattle)
+            {
+                CookieAwareWebClient client = new CookieAwareWebClient(this.cookie);
 
-            CookieAwareWebClient availableBatte = new CookieAwareWebClient(this.cookie);
-            availableBatte.Method = CookieAwareWebClient.GET;
+                List<String> enemyList = SourceParser.battleInfo(client.DownloadString(CoinBrawl.ARENA));
+                String postData = String.Format("battle%5Bdefender_id%5D={0}&token={1}", enemyList[1], enemyList[0]);
+                CookieAwareWebClient battle = new CookieAwareWebClient(this.cookie);
+                battle.Method = CookieAwareWebClient.POST;
+                battle.clickFight = true;
+                battle.CSRF_Token = SourceParser.ParseCSRFToken(client.DownloadString(CoinBrawl.ARENA));
 
-            updateMainForm();
-            //loadStateInfo(Player.getPlayer());
+                String respones = battle.UploadString(CoinBrawl.BATTELS, postData);
+                //CookieAwareWebClient quickStats = new CookieAwareWebClient(this.cookie);
+                //quickStats.Method = CookieAwareWebClient.GET;
+                //CookieAwareWebClient availableBatte = new CookieAwareWebClient(this.cookie);
+                //availableBatte.Method = CookieAwareWebClient.GET;
+                fightTimes++;
+
+                //updateMainForm();
+            }
         }
 
         private void refresh_btn_Click(object sender, EventArgs e)
         {
             updateMainForm();
+        }
+
+        private void stop_btn_Click(object sender, EventArgs e)
+        {
+            this.autoBattle = false;
+            battleThread.Join();
         }
     }
 }

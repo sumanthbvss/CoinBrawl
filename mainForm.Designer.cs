@@ -55,6 +55,7 @@
             this.stop_btn = new System.Windows.Forms.Button();
             this.Exit = new System.Windows.Forms.Button();
             this.refresh_btn = new System.Windows.Forms.Button();
+            this.tokenBar = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // label1
@@ -283,16 +284,17 @@
             // 
             // stop_btn
             // 
-            this.stop_btn.Location = new System.Drawing.Point(213, 12);
+            this.stop_btn.Location = new System.Drawing.Point(276, 12);
             this.stop_btn.Name = "stop_btn";
             this.stop_btn.Size = new System.Drawing.Size(75, 23);
             this.stop_btn.TabIndex = 28;
             this.stop_btn.Text = "Stop";
             this.stop_btn.UseVisualStyleBackColor = true;
+            this.stop_btn.Click += new System.EventHandler(this.stop_btn_Click);
             // 
             // Exit
             // 
-            this.Exit.Location = new System.Drawing.Point(517, 12);
+            this.Exit.Location = new System.Drawing.Point(831, 12);
             this.Exit.Name = "Exit";
             this.Exit.Size = new System.Drawing.Size(75, 23);
             this.Exit.TabIndex = 29;
@@ -302,7 +304,7 @@
             // 
             // refresh_btn
             // 
-            this.refresh_btn.Location = new System.Drawing.Point(359, 12);
+            this.refresh_btn.Location = new System.Drawing.Point(582, 12);
             this.refresh_btn.Name = "refresh_btn";
             this.refresh_btn.Size = new System.Drawing.Size(75, 23);
             this.refresh_btn.TabIndex = 30;
@@ -310,11 +312,19 @@
             this.refresh_btn.UseVisualStyleBackColor = true;
             this.refresh_btn.Click += new System.EventHandler(this.refresh_btn_Click);
             // 
+            // tokenBar
+            // 
+            this.tokenBar.Location = new System.Drawing.Point(577, 91);
+            this.tokenBar.Name = "tokenBar";
+            this.tokenBar.Size = new System.Drawing.Size(183, 23);
+            this.tokenBar.TabIndex = 31;
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(976, 554);
+            this.Controls.Add(this.tokenBar);
             this.Controls.Add(this.refresh_btn);
             this.Controls.Add(this.Exit);
             this.Controls.Add(this.stop_btn);
@@ -379,5 +389,6 @@
         private System.Windows.Forms.Button stop_btn;
         private System.Windows.Forms.Button Exit;
         private System.Windows.Forms.Button refresh_btn;
+        private System.Windows.Forms.ProgressBar tokenBar;
     }
 }

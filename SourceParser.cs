@@ -32,6 +32,12 @@ namespace WindowsFormsApplication1
                 return SourceParser.EMPTY;
         }
 
+        public static String ParseBitcoinAddress(String source) 
+        {
+            String pattern = "(id=\"user_bitcoin_address\")(.*)(value=\")";
+            return pattern;
+        }
+
         public static List<String> ParseArenaPlayer(String src)
         {
             List<String> arenaPlayer = new List<String>();

@@ -97,6 +97,7 @@ namespace WindowsFormsApplication1
         public int upgradeTokensGold() { return this.tokensGold; }
         public int upgradeAttackGold() { return this.attackGold; }
         public int upgradeDefenseGold() { return this.defenseGold; }
+
         public bool canUpgradeStamina() 
         {
             if (this.staminaGold > Int32.Parse(this.gold))
@@ -105,6 +106,7 @@ namespace WindowsFormsApplication1
                 this.setUpgradeStamina(true);
             return this.upgradeStaminaFlag; 
         }
+
         public bool canUpgradeTokens()
         {
             if (this.tokensGold > Int32.Parse(this.gold))
@@ -113,6 +115,7 @@ namespace WindowsFormsApplication1
                 this.setUpgradeTokens(true);
             return this.upgradeTokensFlag; 
         }
+
         public bool canUpgradeAttack()
         {
             if (this.attackGold > Int32.Parse(this.gold))
@@ -121,6 +124,7 @@ namespace WindowsFormsApplication1
                 this.setUpgradeAttack(true);
             return this.upgradeAttackFlag;
         }
+
         public bool canUpgradeDefense()
         {
             if (this.defenseGold > Int32.Parse(this.gold))
@@ -128,6 +132,13 @@ namespace WindowsFormsApplication1
             else
                 this.setUpgradeStamina(true);
             return this.upgradeDefenseFlag; 
+        }
+
+        public bool canBattle()
+        {
+            if(this.tokens.Equals("0"))
+                return false;
+            return true;
         }
 
     }

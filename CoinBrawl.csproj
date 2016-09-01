@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CoinBrawlPath.cs" />
+    <Compile Include="CoinBrawl.cs" />
     <Compile Include="CookieAwareWebClient .cs">
       <SubType>Component</SubType>
     </Compile>
@@ -56,6 +56,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Player.cs" />
     <Compile Include="SourceParser.cs" />
     <Compile Include="mainForm.cs">
       <SubType>Form</SubType>
