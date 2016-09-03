@@ -43,7 +43,7 @@ namespace WindowsFormsApplication1
                 CoinBrawl.UTF8, token, userName.Text, userPassword.Text, CoinBrawl.COMMIT_SIGN_IN);
             try
             {
-                 response = client.UploadString(CoinBrawl.SIGN_IN, postData);
+                response = client.UploadString(CoinBrawl.SIGN_IN, postData);
             }
             catch(WebException ex)
             {
@@ -64,20 +64,9 @@ namespace WindowsFormsApplication1
             {
                 MessageBox.Show("Invalid email or passowrd");
             }
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-            //Extensible
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-            //CoinBrawl Logo
-        }
-
-        private void userName_TextChanged(object sender, EventArgs e)
         {
 
         }

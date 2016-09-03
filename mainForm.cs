@@ -13,10 +13,10 @@ namespace WindowsFormsApplication1
 {
     public partial class mainForm : Form
     {
-        public static int fightTimes = 0;
         public bool autoBattle;
         public CookieContainer cookie;
         private Thread battleThread;
+        private Thread tokenThread;
         public mainForm()
         {
             InitializeComponent();
@@ -26,18 +26,21 @@ namespace WindowsFormsApplication1
         {
             this.autoBattle = false;
             updateMainForm();
+            loadStateInfo();
         }
+
+        private delegate void UpdateBattleInfo(String value);
 
         private void updateMainForm()
         {
             CookieAwareWebClient client = new CookieAwareWebClient(this.cookie);
-            Player.updatePlayer((SourceParser.PlayerStateInfo(client.DownloadString(CoinBrawl.CHARACTER))));           
-            loadStateInfo(Player.getPlayer());
+            Player.updatePlayer((SourceParser.PlayerStateInfo(client.DownloadString(CoinBrawl.CHARACTER))));                       
         }
 
-        private void loadStateInfo(Player player)
+        private void loadStateInfo()
         {
             //Label
+            Player player = Player.getPlayer();
             levelValue.Text = player.getLevel();
             atkValue.Text = player.getAttack();
             defValue.Text = player.getDefense();
@@ -69,6 +72,20 @@ namespace WindowsFormsApplication1
             this.autoBattle = true;
             battleThread = new Thread(new ThreadStart(persistantBattle));
             battleThread.Start();
+
+            tokenThread = new Thread(new ThreadStart(checkToken));
+            tokenThread.Start();
+        }
+
+        private void checkToken()
+        {
+            while(autoBattle)
+            {
+            updateMainForm();
+            if(SourceParser.ParseAvailableTokens(Player.getPlayer().getTokens()).Equals(Player.EMPTY))
+                autoBattle = false;
+            }
+            tokenThread.Join();
         }
 
         private void persistantBattle()
@@ -82,23 +99,23 @@ namespace WindowsFormsApplication1
                 battle.Method = CookieAwareWebClient.POST;
                 battle.clickFight = true;
                 battle.CSRF_Token = SourceParser.ParseCSRFToken(client.DownloadString(CoinBrawl.ARENA));
-
-                String respones = battle.UploadString(CoinBrawl.BATTELS, postData);
-                fightTimes++;
-
+                battle.UploadString(CoinBrawl.BATTELS, postData);                
                 //updateMainForm();
             }
+            battleThread.Join();
         }
 
         private void refresh_btn_Click(object sender, EventArgs e)
         {
             updateMainForm();
+            loadStateInfo();
         }
 
         private void stop_btn_Click(object sender, EventArgs e)
         {
             this.autoBattle = false;
-            battleThread.Join();
+            updateMainForm();
+            loadStateInfo();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -107,10 +124,22 @@ namespace WindowsFormsApplication1
             player.setBitCoinAddress(bitconAddressTextBox.Text);
             CookieAwareWebClient client = new CookieAwareWebClient(this.cookie);
             String postData = String.Format("utf8={0}&_method={1}&authenticity_token={2}&user%5Bbitcoin_address%5D={3}&commit={4}",
-                CoinBrawl.UTF8, CoinBrawl.METHOD_PATCH, player.getAuthenticityToken(), player.getBitCoinAddress(), CoinBrawl.COMMIT_SAVE);
-            client.Method = "POST";
+                CoinBrawl.UTF8, CoinBrawl.METHOD_PATCH, SourceParser.ParseCSRFToken(client.DownloadString(CoinBrawl.CHARACTER)), player.getBitCoinAddress(), CoinBrawl.COMMIT_SAVE);
+            client.Method = CookieAwareWebClient.POST;
             client.clickSave = true;
-            String response = client.UploadString(CoinBrawl.USER + player.getUserID(), postData);
+            try
+            {
+                client.UploadString(CoinBrawl.USER + player.getUserID(), postData);
+                MessageBox.Show("You have successfully updated your bitcoin address");
+            }
+            catch (WebException ex)
+            {
+                //
+                MessageBox.Show("Fail to updat your bitcoin address");
+                //
+            }
+            updateMainForm();
+            loadStateInfo();
         }
 
         private void atk_btn_Click(object sender, EventArgs e)
@@ -120,6 +149,7 @@ namespace WindowsFormsApplication1
             client.clickSave = true;
             client.DownloadString(CoinBrawl.UPGRADE_ATTACK);
             updateMainForm();
+            loadStateInfo();
         }
 
         private void def_btn_Click(object sender, EventArgs e)
