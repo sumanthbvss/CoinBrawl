@@ -15,8 +15,10 @@ namespace WindowsFormsApplication1
     {
         public bool autoBattle;
         public CookieContainer cookie;
+        public const String NEW_LINE = "\n";
         private Thread battleThread;
         private Thread tokenThread;
+        private delegate void BattleResultHandler(String text, Color color);
         public mainForm()
         {
             InitializeComponent();
@@ -90,6 +92,11 @@ namespace WindowsFormsApplication1
 
         private void persistantBattle()
         {
+            String result = String.Empty;
+            String points = String.Empty;
+            CookieAwareWebClient initPoint = new CookieAwareWebClient(this.cookie);
+            points = SourceParser.ParseArenaPoints(initPoint.DownloadString(CoinBrawl.ARENA_RANK));
+            setBattleResultText("Your current Arena Points: " + points + NEW_LINE, Color.Black);
             while (autoBattle)
             {
                 CookieAwareWebClient client = new CookieAwareWebClient(this.cookie);
@@ -99,10 +106,37 @@ namespace WindowsFormsApplication1
                 battle.Method = CookieAwareWebClient.POST;
                 battle.clickFight = true;
                 battle.CSRF_Token = SourceParser.ParseCSRFToken(client.DownloadString(CoinBrawl.ARENA));
-                battle.UploadString(CoinBrawl.BATTELS, postData);                
+                battle.UploadString(CoinBrawl.BATTELS, postData);
+
+                CookieAwareWebClient arenaClient = new CookieAwareWebClient(this.cookie);
+                points = SourceParser.ParseArenaPoints(arenaClient.DownloadString(CoinBrawl.ARENA_RANK));
+                if(points.Equals(SourceParser.ParseArenaPoints(arenaClient.DownloadString(CoinBrawl.ARENA_RANK))))
+                {
+                    result += CoinBrawl.LOSE_BATTLE + NEW_LINE;
+                    setBattleResultText(result, Color.Red);
+                }
+                else
+                {
+                    result += CoinBrawl.WIN_BATTLE + NEW_LINE;
+                    setBattleResultText(result, Color.Green);
+                }
                 //updateMainForm();
             }
             battleThread.Join();
+        }
+
+        private void setBattleResultText(String text, Color color)
+        {
+            if (this.battleResultBox.InvokeRequired)
+            {
+                BattleResultHandler brHandler = new BattleResultHandler(setBattleResultText);
+                this.Invoke(brHandler, text, color);
+            }
+            else
+            {
+                this.battleResultBox.Text = text;
+                this.battleResultBox.ForeColor = color;
+            }
         }
 
         private void refresh_btn_Click(object sender, EventArgs e)

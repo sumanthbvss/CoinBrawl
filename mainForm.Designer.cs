@@ -55,11 +55,11 @@
             this.stop_btn = new System.Windows.Forms.Button();
             this.Exit = new System.Windows.Forms.Button();
             this.refresh_btn = new System.Windows.Forms.Button();
-            this.tokenBar = new System.Windows.Forms.ProgressBar();
             this.bitcoinAddr = new System.Windows.Forms.Label();
             this.bitconAddressTextBox = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.satoshiWithdraw_btn = new System.Windows.Forms.Button();
+            this.battleResultBox = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -183,7 +183,7 @@
             this.staminaValue.Name = "staminaValue";
             this.staminaValue.ReadOnly = true;
             this.staminaValue.Size = new System.Drawing.Size(114, 22);
-            this.staminaValue.TabIndex = 16;            
+            this.staminaValue.TabIndex = 16;
             // 
             // tokensValue
             // 
@@ -223,7 +223,7 @@
             this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label2.CausesValidation = false;
             this.label2.Font = new System.Drawing.Font("PMingLiU", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label2.Location = new System.Drawing.Point(463, 46);
+            this.label2.Location = new System.Drawing.Point(431, 44);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(2, 508);
             this.label2.TabIndex = 21;
@@ -318,13 +318,6 @@
             this.refresh_btn.UseVisualStyleBackColor = true;
             this.refresh_btn.Click += new System.EventHandler(this.refresh_btn_Click);
             // 
-            // tokenBar
-            // 
-            this.tokenBar.Location = new System.Drawing.Point(577, 91);
-            this.tokenBar.Name = "tokenBar";
-            this.tokenBar.Size = new System.Drawing.Size(183, 23);
-            this.tokenBar.TabIndex = 31;
-            // 
             // bitcoinAddr
             // 
             this.bitcoinAddr.AutoSize = true;
@@ -359,18 +352,26 @@
             this.satoshiWithdraw_btn.Size = new System.Drawing.Size(171, 23);
             this.satoshiWithdraw_btn.TabIndex = 35;
             this.satoshiWithdraw_btn.Text = "Withdraw (Min. 100000 Satoshi)";
-            this.satoshiWithdraw_btn.UseVisualStyleBackColor = true;            
+            this.satoshiWithdraw_btn.UseVisualStyleBackColor = true;
+            // 
+            // battleResultBox
+            // 
+            this.battleResultBox.Location = new System.Drawing.Point(451, 83);
+            this.battleResultBox.Name = "battleResultBox";
+            this.battleResultBox.Size = new System.Drawing.Size(316, 318);
+            this.battleResultBox.TabIndex = 36;
+            this.battleResultBox.Text = "";
             // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(451, 554);
+            this.ClientSize = new System.Drawing.Size(788, 503);
+            this.Controls.Add(this.battleResultBox);
             this.Controls.Add(this.satoshiWithdraw_btn);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.bitconAddressTextBox);
             this.Controls.Add(this.bitcoinAddr);
-            this.Controls.Add(this.tokenBar);
             this.Controls.Add(this.refresh_btn);
             this.Controls.Add(this.Exit);
             this.Controls.Add(this.stop_btn);
@@ -435,10 +436,10 @@
         private System.Windows.Forms.Button stop_btn;
         private System.Windows.Forms.Button Exit;
         private System.Windows.Forms.Button refresh_btn;
-        private System.Windows.Forms.ProgressBar tokenBar;
         private System.Windows.Forms.Label bitcoinAddr;
         private System.Windows.Forms.TextBox bitconAddressTextBox;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button satoshiWithdraw_btn;
+        private System.Windows.Forms.RichTextBox battleResultBox;
     }
 }

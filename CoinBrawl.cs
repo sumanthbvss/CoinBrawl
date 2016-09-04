@@ -13,6 +13,8 @@ namespace WindowsFormsApplication1
         public static String COMMIT_SIGN_IN = "Sign+in";
         public static String COMMIT_SAVE = "Save";
         public static String METHOD_PATCH = "patch";
+        public static String WIN_BATTLE = "Congratulations, you won the fight!";
+        public static String LOSE_BATTLE = "Oh no, you lost the fight!";
 
         //Link
         public static String ARENA = "https://www.coinbrawl.com/arena";

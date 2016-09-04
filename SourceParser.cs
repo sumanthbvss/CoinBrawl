@@ -25,7 +25,6 @@ namespace WindowsFormsApplication1
             Match match = Regex.Match(sourceInfo, pattern);
             return match.Groups[2].Value;
         }
-
         public static String ParseAuthenticationToken(String htmlSourceStr)
         {
             if(htmlSourceStr.Length == 0)
@@ -39,7 +38,6 @@ namespace WindowsFormsApplication1
             else
                 return SourceParser.EMPTY;
         }
-
         public static String ParseBitcoinAddress(String sourceInfo) 
         {
             String pattern = "(id=\"user_bitcoin_address\")(\\s)(name=\"user(.*)\")(\\s)(type=\"text\")(\\s)(value=\")([A-Za-z0-9]*)(?=\")";
@@ -48,13 +46,11 @@ namespace WindowsFormsApplication1
             Match match = Regex.Match(sourceInfo, pattern);
             return match.Groups[9].Value;
         }
-
         public static List<String> ParseArenaPlayer(String src)
         {
             List<String> arenaPlayer = new List<String>();
             return arenaPlayer;
         }
-
         public static String ParseCSRFToken(String sourceInfo)
         {
             String pattern = "(<meta content=\"authenticity_token\" name=\"csrf-param\"\\/><meta content=\")(.*)(\" name=\"csrf-token\"\\/>)";
@@ -63,7 +59,6 @@ namespace WindowsFormsApplication1
             Match match = Regex.Match(SourceParser.FilterBlanlAndNewLine(sourceInfo), pattern);
             return match.Groups[2].Value;
         }
-
         public static List<String> BattleInfo(String sourceInfo)
         {
             //List<List<String>> battleInfo = new List<List<String>>();
@@ -82,7 +77,6 @@ namespace WindowsFormsApplication1
             enemyList.Add(match.Groups[4].Value);//Enemy ID
             return enemyList;
         }
-
         public static List<String> PlayerStateInfo(String sourceInfo)
         {
             List<String> playerInfo = new List<String>();
@@ -90,7 +84,8 @@ namespace WindowsFormsApplication1
             sourceInfo = sourceInfo.Replace("\r", SourceParser.EMPTY);
             String pattern = "<table class='table stats-table'>(.*)<\\/tbody><\\/table>";
             Match match = Regex.Match(sourceInfo, pattern);
-            /* List stored in order as following:
+            /* 
+             * List stored in order as following:
              * 1.Level              2.Attack
              * 3.Defense            4.Stamina
              * 5.Tokens             6.Gold
@@ -114,7 +109,6 @@ namespace WindowsFormsApplication1
             playerInfo.Add(SourceParser.ParseUserID(sourceInfo));
             return playerInfo;
         }
-
         public static String ParseLevel(String src)
         {
             String pattern = "<td>Level<\\/td><td>([0-9])*";
@@ -122,7 +116,6 @@ namespace WindowsFormsApplication1
             int count = match.Groups.Count;
             return match.Groups[0].Value.Replace("<td>Level</td><td>", SourceParser.EMPTY);
         }
-
         public static String ParseStamina(String src)
         {
             String pattern = "<td>Stamina<\\/td><td>([0-9])*\\/([0-9])*";
@@ -130,7 +123,6 @@ namespace WindowsFormsApplication1
             int count = match.Groups.Count;
             return match.Groups[0].Value.Replace("<td>Stamina</td><td>", SourceParser.EMPTY);
         }
-
         public static String ParseTokens(String src)
         {
             String pattern = "<td>Tokens<\\/td><td>([0-9])*\\/([0-9])*";
@@ -138,7 +130,6 @@ namespace WindowsFormsApplication1
             int count = match.Groups.Count;
             return match.Groups[0].Value.Replace("<td>Tokens</td><td>", SourceParser.EMPTY);
         }
-
         public static String ParseAttack(String src)
         {
             String pattern = "<td>Attack<\\/td><td><span>([0-9])*";
@@ -146,7 +137,6 @@ namespace WindowsFormsApplication1
             int count = match.Groups.Count;
             return match.Groups[0].Value.Replace("<td>Attack</td><td><span>", SourceParser.EMPTY);
         }
-
         public static String ParseDefense(String src)
         {
             String pattern = "<td>Defense<\\/td><td><span>([0-9])*";
@@ -154,7 +144,6 @@ namespace WindowsFormsApplication1
             int count = match.Groups.Count;
             return match.Groups[0].Value.Replace("<td>Defense</td><td><span>", SourceParser.EMPTY);
         }
-
         public static String ParseGold(String src)
         {
             String pattern = "<td>Gold<\\/td><td><strong class='text-success'>([0-9])*";
@@ -169,7 +158,6 @@ namespace WindowsFormsApplication1
             int count = match.Groups.Count;
             return match.Groups[0].Value.Replace("<td>Satoshi</td><td><strong class='text-success'>", SourceParser.EMPTY);
         }
-
         public static String ParseUpdateStamina(String src) 
         {
             String staminaPattern = "<tr><td>Stamina</td><td>(.*)</td></tr><tr><td>Tokens</td>";
@@ -197,6 +185,19 @@ namespace WindowsFormsApplication1
             String upgradePattern = "(Upgrade \\([0-9]* gold\\))";
             Match match = Regex.Match(Regex.Match(Regex.Match(src, staminaPattern).Groups[0].Value, upgradePattern).Groups[0].Value, SourceParser.GOLD_EXPENSE);
             return match.Groups[0].Value; 
+        }
+        public static String ParseAvailableTokens(String tokenString)
+        {
+            Match match = Regex.Match(tokenString, "([0-9]+)\\/([0-9]+)");
+            return match.Groups[2].Value;
+        }
+        public static String ParseArenaPoints(String sourceInfo)
+        {
+            String pattern = "(<td>Your arena points<\\/td><td><strong>)([0-9]*(,[0-9]*)*)(<\\/strong><\\/td>)";
+            sourceInfo = sourceInfo.Replace("\n", SourceParser.EMPTY);
+            sourceInfo = sourceInfo.Replace("\r", SourceParser.EMPTY);
+            Match match = Regex.Match(sourceInfo, pattern);
+            return match.Groups[2].Value;
         }
     }
 }
