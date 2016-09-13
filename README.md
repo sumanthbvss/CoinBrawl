@@ -1,10 +1,15 @@
 # CoinBrawl
+Current Release v 0.0.1 (2016/9/5)
 
-An all free earning Satoshi site, you can have up to 10,000 satoshi a day withou paying any money.
+##Overview
+CoinBrawl is a simple windows form program to [Coin Brawl](https://www.coinbrawl.com/character) to automatically 
+fight and upgrade your quota.
 
-Application provided function:
+##Operating System Support
+- Windows 7 or higher
 
-1.Automatically fight
-2.Automatically upgrade states
+##Features
+- Automatically fight with available tokens
+- Automatically upgrade states
 
-Best effort to optimized this
+##Change Logs
