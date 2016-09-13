@@ -29,14 +29,14 @@ namespace WindowsFormsApplication1
             this.autoBattle = false;
             updateMainForm();
             loadStateInfo();
-        }
-
-        private delegate void UpdateBattleInfo(String value);
+        }        
 
         private void updateMainForm()
         {
             CookieAwareWebClient client = new CookieAwareWebClient(this.cookie);
-            Player.updatePlayer((SourceParser.PlayerStateInfo(client.DownloadString(CoinBrawl.CHARACTER))));                       
+            List<String> info = SourceParser.PlayerStateInfo(client.DownloadString(CoinBrawl.CHARACTER));
+            info.Add(SourceParser.ParseArenaPoints(client.DownloadString(CoinBrawl.ARENA_RANK)));
+            Player.updatePlayer(info);
         }
 
         private void loadStateInfo()
@@ -51,16 +51,17 @@ namespace WindowsFormsApplication1
             goldValue.Text = player.getGold();
             satoshiValue.Text = player.getSatoshi();
             bitconAddressTextBox.Text = player.getBitCoinAddress();
+            arenapointsValue.Text = player.getArenaPoints();
 
             //Button
             stamina_btn.Enabled = player.canUpgradeStamina();
-            stamina_btn.Text = Player.UPGRADE + player.upgradeStaminaGold() + Player.GOLD;
+            stamina_btn.Text = Player.UPGRADE + player.upgradeStaminaGold() + Player.GOLD_LABEL;
             tokens_btn.Enabled = player.canUpgradeTokens();
-            tokens_btn.Text = Player.UPGRADE + player.upgradeTokensGold() + Player.GOLD;
+            tokens_btn.Text = Player.UPGRADE + player.upgradeTokensGold() + Player.GOLD_LABEL;
             atk_btn.Enabled = player.canUpgradeAttack();
-            atk_btn.Text = Player.UPGRADE + player.upgradeAttackGold() + Player.GOLD;
+            atk_btn.Text = Player.UPGRADE + player.upgradeAttackGold() + Player.GOLD_LABEL;
             def_btn.Enabled = player.canUpgradeDefense();
-            def_btn.Text = Player.UPGRADE + player.upgradeDefenseGold() + Player.GOLD;
+            def_btn.Text = Player.UPGRADE + player.upgradeDefenseGold() + Player.GOLD_LABEL;
         }
 
         private void Exit_Click(object sender, EventArgs e)
@@ -94,23 +95,22 @@ namespace WindowsFormsApplication1
         {
             String result = String.Empty;
             String points = String.Empty;
-            CookieAwareWebClient initPoint = new CookieAwareWebClient(this.cookie);
-            points = SourceParser.ParseArenaPoints(initPoint.DownloadString(CoinBrawl.ARENA_RANK));
-            setBattleResultText("Your current Arena Points: " + points + NEW_LINE, Color.Black);
+            CookieAwareWebClient client = new CookieAwareWebClient(this.cookie);
+            points = SourceParser.ParseArenaPoints(client.DownloadString(CoinBrawl.ARENA_RANK));
+            setBattleResultText("Battle Start:" + DateTime.Now.ToString("HH:mm:ss tt") 
+                + NEW_LINE + "Your current Arena Points: " + points + NEW_LINE,  Color.Black);
             while (autoBattle)
             {
-                CookieAwareWebClient client = new CookieAwareWebClient(this.cookie);
+                client.clickFight = false;
+                points = SourceParser.ParseArenaPoints(client.DownloadString(CoinBrawl.ARENA_RANK));
                 List<String> enemyList = SourceParser.BattleInfo(client.DownloadString(CoinBrawl.ARENA));
                 String postData = String.Format("battle%5Bdefender_id%5D={0}&token={1}", enemyList[1], enemyList[0]);
-                CookieAwareWebClient battle = new CookieAwareWebClient(this.cookie);
-                battle.Method = CookieAwareWebClient.POST;
-                battle.clickFight = true;
-                battle.CSRF_Token = SourceParser.ParseCSRFToken(client.DownloadString(CoinBrawl.ARENA));
-                battle.UploadString(CoinBrawl.BATTELS, postData);
-
-                CookieAwareWebClient arenaClient = new CookieAwareWebClient(this.cookie);
-                points = SourceParser.ParseArenaPoints(arenaClient.DownloadString(CoinBrawl.ARENA_RANK));
-                if(points.Equals(SourceParser.ParseArenaPoints(arenaClient.DownloadString(CoinBrawl.ARENA_RANK))))
+                client.Method = CookieAwareWebClient.POST;
+                client.clickFight = true;
+                client.CSRF_Token = SourceParser.ParseCSRFToken(client.DownloadString(CoinBrawl.ARENA));                
+                client.UploadString(CoinBrawl.BATTELS, postData);
+                client.clickFight = false;
+                if (points.Equals(SourceParser.ParseArenaPoints(client.DownloadString(CoinBrawl.ARENA_RANK))))
                 {
                     result += CoinBrawl.LOSE_BATTLE + NEW_LINE;
                     setBattleResultText(result, Color.Red);
@@ -120,8 +120,8 @@ namespace WindowsFormsApplication1
                     result += CoinBrawl.WIN_BATTLE + NEW_LINE;
                     setBattleResultText(result, Color.Green);
                 }
-                //updateMainForm();
             }
+            setBattleResultText("Battle Stop:" + DateTime.Now.ToString("HH:mm:ss tt"), Color.Black);
             battleThread.Join();
         }
 

@@ -10,8 +10,24 @@ namespace WindowsFormsApplication1
     {
         static Player player = new Player();
         public static String UPGRADE = "Upgrade ";
-        public static String GOLD = " Gold";
+        public static String GOLD_LABEL = " Gold";
         public static String DISABLED = "disabled";
+        public static String EMPTY = "0";
+        public static int PLAYER_INFO_SIZE = 14;
+        public static int LEVEL = 1;
+        public static int ATTACK = 2;
+        public static int DEFENSE = 3;
+        public static int STAMINA = 4;
+        public static int TOKENS = 5;
+        public static int GOLDS = 6;
+        public static int SATOSHI = 7;
+        public static int UPGRADE_STAMINA_GOLD = 8;
+        public static int UPGRADE_TOKENS_GOLD = 9;
+        public static int UPGRADE_ATK_GOLD = 10;
+        public static int UPGRADE_DEF_GOLD = 11;
+        public static int BITCOIN_ADDR = 12;
+        public static int USER_ID = 13;
+        public static int ARENA_POINTS = 14;
         String level;
         String job;
         String gems;
@@ -49,19 +65,20 @@ namespace WindowsFormsApplication1
 
         public static void updatePlayer(List<String> info)
         {
-            player.level = info[0];
-            player.attack = info[1];
-            player.defense = info[2];
-            player.stamina = info[3];
-            player.tokens = info[4];
-            player.gold = info[5];
-            player.satoshi = info[6];
-            player.staminaGold = Int32.Parse(info[7]);
-            player.tokensGold = Int32.Parse(info[8]);
-            player.attackGold = Int32.Parse(info[9]);
-            player.defenseGold = Int32.Parse(info[10]);
-            player.bitcoinAddress = info[11];
-            player.userID = info[12];
+            player.level = info[Player.LEVEL];
+            player.attack = info[Player.ATTACK];
+            player.defense = info[Player.DEFENSE];
+            player.stamina = info[Player.STAMINA];
+            player.tokens = info[Player.TOKENS];
+            player.gold = info[Player.GOLDS];
+            player.satoshi = info[Player.SATOSHI];
+            player.staminaGold = Int32.Parse(info[Player.UPGRADE_STAMINA_GOLD]);
+            player.tokensGold = Int32.Parse(info[Player.UPGRADE_TOKENS_GOLD]);
+            player.attackGold = Int32.Parse(info[Player.UPGRADE_ATK_GOLD]);
+            player.defenseGold = Int32.Parse(info[Player.UPGRADE_DEF_GOLD]);
+            player.bitcoinAddress = info[Player.BITCOIN_ADDR];
+            player.userID = info[Player.USER_ID];
+            player.arenaPoints = info[Player.ARENA_POINTS];
         }
 
         //Setter
@@ -86,7 +103,6 @@ namespace WindowsFormsApplication1
         public void setUpgradeAttack(bool flag) { this.upgradeAttackFlag = flag; }
         public void setUpgradeDefense(bool flag) { this.upgradeDefenseFlag = flag; }
         public void setUserID(String userID) { this.userID = userID; }
-
         public void setAuthenticityToken(String authToken) { this.authenticity_token = authToken; }
 
         //Getter

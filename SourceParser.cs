@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace WindowsFormsApplication1
 {
@@ -13,6 +10,28 @@ namespace WindowsFormsApplication1
         private const String EMPTY = "";
         private const String GOLD_EXPENSE = "([0-9])+";
         private SourceParser() { }
+
+        private static void ParallelParsingStateThread1(List<String> playerInfo, String sourceInfo)
+        {
+            playerInfo[Player.LEVEL] = SourceParser.ParseLevel(sourceInfo);
+            playerInfo[Player.GOLDS] = SourceParser.ParseGold(sourceInfo);
+            playerInfo[Player.ATTACK] = SourceParser.ParseAttack(sourceInfo);
+            playerInfo[Player.DEFENSE] = SourceParser.ParseDefense(sourceInfo);
+            playerInfo[Player.STAMINA] = SourceParser.ParseStamina(sourceInfo);
+            playerInfo[Player.TOKENS] = SourceParser.ParseTokens(sourceInfo);
+            playerInfo[Player.SATOSHI] = SourceParser.ParseSatoshi(sourceInfo);
+        }
+
+        private static void ParallelParsingStateThread2(List<String> playerInfo, String sourceInfo)
+        {
+            playerInfo[Player.UPGRADE_STAMINA_GOLD] = SourceParser.ParseUpdateStamina(sourceInfo);
+            playerInfo[Player.UPGRADE_TOKENS_GOLD] = SourceParser.ParseUpdateTokens(sourceInfo);
+            playerInfo[Player.UPGRADE_ATK_GOLD] = SourceParser.ParseUpdateATK(sourceInfo);
+            playerInfo[Player.UPGRADE_DEF_GOLD] = SourceParser.ParseUpdateDEF(sourceInfo);
+            playerInfo[Player.BITCOIN_ADDR] = SourceParser.ParseBitcoinAddress(sourceInfo);
+            playerInfo[Player.USER_ID] = SourceParser.ParseUserID(sourceInfo);
+        }
+
         public static String FilterBlanlAndNewLine(String sourceInfo)
         {
             sourceInfo = sourceInfo.Replace("\r", SourceParser.EMPTY).Replace("\n", SourceParser.EMPTY);
@@ -80,35 +99,23 @@ namespace WindowsFormsApplication1
         public static List<String> PlayerStateInfo(String sourceInfo)
         {
             List<String> playerInfo = new List<String>();
+            for (int i = 0; i < Player.PLAYER_INFO_SIZE; ++i)
+                playerInfo.Add(Player.EMPTY);
             sourceInfo = sourceInfo.Replace("\n", SourceParser.EMPTY);
             sourceInfo = sourceInfo.Replace("\r", SourceParser.EMPTY);
             String pattern = "<table class='table stats-table'>(.*)<\\/tbody><\\/table>";
             Match match = Regex.Match(sourceInfo, pattern);
-            /* 
-             * List stored in order as following:
-             * 1.Level              2.Attack
-             * 3.Defense            4.Stamina
-             * 5.Tokens             6.Gold
-             * 7.Satoshi            8.Upgrade Stamina
-             * 9.Upgrade Tokens     10.Upgrade Attack
-             * 11.Upgrade Defense   12.Bitcoin Address
-             * 13.User ID
-             */
-            playerInfo.Add(SourceParser.ParseLevel(sourceInfo));
-            playerInfo.Add(SourceParser.ParseAttack(sourceInfo));
-            playerInfo.Add(SourceParser.ParseDefense(sourceInfo));            
-            playerInfo.Add(SourceParser.ParseStamina(sourceInfo));
-            playerInfo.Add(SourceParser.ParseTokens(sourceInfo));
-            playerInfo.Add(SourceParser.ParseGold(sourceInfo));
-            playerInfo.Add(SourceParser.ParseSatoshi(sourceInfo));
-            playerInfo.Add(SourceParser.ParseUpdateStamina(sourceInfo));
-            playerInfo.Add(SourceParser.ParseUpdateTokens(sourceInfo));
-            playerInfo.Add(SourceParser.ParseUpdateATK(sourceInfo));
-            playerInfo.Add(SourceParser.ParseUpdateDEF(sourceInfo));
-            playerInfo.Add(SourceParser.ParseBitcoinAddress(sourceInfo));
-            playerInfo.Add(SourceParser.ParseUserID(sourceInfo));
+
+            List<Thread> threads = new List<Thread>();
+            threads.Add(new Thread(() => ParallelParsingStateThread1(playerInfo, sourceInfo)));
+            threads.Add(new Thread(() => ParallelParsingStateThread2(playerInfo, sourceInfo)));
+            threads[0].Start();
+            threads[1].Start();
+            foreach (Thread thread in threads)
+                thread.Join();
             return playerInfo;
         }
+
         public static String ParseLevel(String src)
         {
             String pattern = "<td>Level<\\/td><td>([0-9])*";
