@@ -127,7 +127,7 @@ namespace WindowsFormsApplication1
 
         public bool canUpgradeStamina() 
         {
-            if (this.staminaGold > Int32.Parse(this.gold))
+            if (this.staminaGold > Int64.Parse(this.gold))
                 this.setUpgradeStamina(false);
             else
                 this.setUpgradeStamina(true);
@@ -136,7 +136,7 @@ namespace WindowsFormsApplication1
 
         public bool canUpgradeTokens()
         {
-            if (this.tokensGold > Int32.Parse(this.gold))
+            if (this.tokensGold > Int64.Parse(this.gold))
                 this.setUpgradeTokens(false);
             else
                 this.setUpgradeTokens(true);
@@ -145,7 +145,7 @@ namespace WindowsFormsApplication1
 
         public bool canUpgradeAttack()
         {
-            if (this.attackGold > Int32.Parse(this.gold))
+            if (this.attackGold > Int64.Parse(this.gold))
                 this.setUpgradeAttack(false);
             else
                 this.setUpgradeAttack(true);
@@ -154,7 +154,7 @@ namespace WindowsFormsApplication1
 
         public bool canUpgradeDefense()
         {
-            if (this.defenseGold > Int32.Parse(this.gold))
+            if (this.defenseGold > Int64.Parse(this.gold))
                 this.setUpgradeDefense(false);
             else
                 this.setUpgradeStamina(true);
